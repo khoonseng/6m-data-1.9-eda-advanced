@@ -118,6 +118,18 @@ Create a new Python script or Jupyter Notebook and complete the following tasks 
 2. Generate random "Sales" data for each day.  
 3. **Resample** this daily data to find the **Total (Sum) Sales per Month**.
 
+```python
+import pandas as pd
+import numpy as np
+
+daily_index = pd.date_range("2023-01-01", periods=365, freq="D")
+sales_data = np.random.randint(100, 2000, size=len(daily_index))
+sales_df = pd.DataFrame({"Sales" : sales_data}, index=daily_index)
+
+sales_total_resampled = sales_df.resample('M').sum()
+sales_total_resampled
+```
+
 **Task 2: The "Wide" Report**
 
 1. Create a small dataframe with columns: \['Date', 'Region', 'Sales'\]. Populate it with data for 3 regions (North, South, East) over 5 different dates.  
@@ -125,6 +137,21 @@ Create a new Python script or Jupyter Notebook and complete the following tasks 
    * Date is the Index.  
    * Region names are the Columns (North, South, East).  
    * Sales are the Values.
+
+```python
+import pandas as pd
+import numpy as np
+
+date_series = pd.to_datetime(['2025-01-01','2025-02-01','2025-03-01','2025-04-01','2025-05-01'] * 3)
+region_series = ['North'] * 5 + ['South'] * 5 + ['East'] * 5
+region_sales_data = np.random.randint(100, 2000, size=15)
+region_sales_df = pd.DataFrame({'Date': date_series,
+                                'Region': region_series,
+                                'Sales': region_sales_data})
+
+pivot_result = region_sales_df.pivot(index="Date",columns="Region",values="Sales")
+pivot_result
+```
 
 **Task 3: The Executive Summary**
 
@@ -134,6 +161,14 @@ Create a new Python script or Jupyter Notebook and complete the following tasks 
    * **Values:** Total Bill.  
    * **Aggregation:** Calculate the **Average (mean)** bill size.  
    * **Margins:** Include the "All" row/column totals.
+
+```python
+import pandas as pd
+
+tips = pd.read_csv("../data/tips.csv")
+tips_pivot = tips.pivot_table(index="day", columns="time", values="total_bill", aggfunc="mean", margins=True)
+tips_pivot
+```
 
 Submission:
 
